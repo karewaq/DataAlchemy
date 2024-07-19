@@ -1,0 +1,49 @@
+ DataAlchemy
+# DataAlchemy.py
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# Data Processing
+def load_data(file_path):
+    return pd.read_csv(file_path)
+
+def clean_data(df):
+    df.dropna(inplace=True)
+    return df
+
+# Data Visualization
+def plot_data(df, x, y):
+    plt.figure(figsize=(10, 6))
+    plt.plot(df[x], df[y])
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.title(f'{y} vs {x}')
+    plt.show()
+
+# Model Training
+def train_model(X, y):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+    return model, X_test, y_test
+
+# Example usage
+if __name__ == "__main__":
+    # Load and clean data
+    df = load_data('sample.csv')
+    df = clean_data(df)
+
+    # Plot data
+    plot_data(df, 'feature_column', 'target_column')
+
+    # Train model
+    X = df[['feature_column']]
+    y = df['target_column']
+    model, X_test, y_test = train_model(X, y)
+
+    # Print model coefficients
+    print(f'Model Coefficients: {model.coef_}')
+    print(f'Model Intercept: {model.intercept_}')
